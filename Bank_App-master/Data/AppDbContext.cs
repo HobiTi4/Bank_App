@@ -58,6 +58,15 @@ namespace Bank_App.Data
             modelBuilder.Entity<CreditCard>()
                 .HasIndex(c => c.CardNumber)
                 .IsUnique();
+
+            modelBuilder.Entity<CreditCard>()
+                .Property(c => c.Balance)
+                .HasPrecision(18, 2); 
+
+            modelBuilder.Entity<Transaction>()
+                .Property(t => t.Amount)
+                .HasPrecision(18, 2);  
         }
+
     }
 }

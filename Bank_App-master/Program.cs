@@ -17,6 +17,11 @@ namespace Bank_App
         static async Task Main(string[] args)
         {
             using IHost host = Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders(); 
+                    logging.SetMinimumLevel(LogLevel.Warning); 
+                })
                 .ConfigureServices((context, services) =>
                 {
                     services.AddDbContext<AppDbContext>();
@@ -25,9 +30,9 @@ namespace Bank_App
                     services.AddScoped<ICreditCardService, CreditCardService>();
                     services.AddScoped<ITransactionService, TransactionService>();
                     services.AddScoped<App>();
-
                 })
                 .Build();
+
 
             var userService = host.Services.GetRequiredService<IUserService>();
             var cardService = host.Services.GetRequiredService<ICreditCardService>();
