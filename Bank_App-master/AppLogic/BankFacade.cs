@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Bank_App.AppLogic
 {
-    public class BankFacade
+    public class BankFacade : IBankFacade
     {
         private readonly AppDbContext _context;
         private readonly IUserService _userService;

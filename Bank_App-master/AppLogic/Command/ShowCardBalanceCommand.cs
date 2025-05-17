@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +9,10 @@ namespace Bank_App.AppLogic.Command
 {
     public class ShowCardBalanceCommand : ICommand
     {
-        private readonly BankFacade _facade;
-        private readonly ConsoleUI _ui;
+        private readonly IBankFacade _facade;
+        private readonly IConsoleUI _ui;
 
-        public ShowCardBalanceCommand(BankFacade facade, ConsoleUI ui)
+        public ShowCardBalanceCommand(IBankFacade facade, IConsoleUI ui)
         {
             _facade = facade;
             _ui = ui;
@@ -29,7 +30,8 @@ namespace Bank_App.AppLogic.Command
                 }
 
                 var balance = await _facade.GetCardBalanceAsync(cardId);
-                _ui.ShowMessage($"Balance for card ID {cardId}: {balance}");
+                string balanceFormatted = balance.ToString("0.00", CultureInfo.InvariantCulture);
+                _ui.ShowMessage($"Balance for card ID {cardId}: {balanceFormatted}");
             }
             catch (Exception ex)
             {

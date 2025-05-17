@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bank_App.AppLogic
 {
-    public class ConsoleUI
+    public class ConsoleUI : IConsoleUI
     {
         public void ShowMenu()
         {
