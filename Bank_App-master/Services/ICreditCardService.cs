@@ -10,5 +10,9 @@ namespace Bank_App.Services
     public interface ICreditCardService
     {
         Task<CreditCard> CreateCardAsync(int userId);
+        Task<List<CreditCard>> GetCardsByUserIdAsync(int userId);
+        Task<decimal> GetBalanceAsync(int cardId);
+        Task<CreditCard> GetCardByIdAsync(int cardId);
+
     }
 }

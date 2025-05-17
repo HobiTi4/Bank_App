@@ -36,5 +36,14 @@ namespace Bank_App.Services
                 .Include(u => u.CreditCards)
                 .ToListAsync();
         }
+        public async Task<User> GetUserByIdAsync(int userId)
+        {
+            return await _context.Users.FindAsync(userId);
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
     }
 }

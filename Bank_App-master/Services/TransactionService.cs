@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bank_App.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bank_App.Services
 {
@@ -16,18 +17,35 @@ namespace Bank_App.Services
             _context = context;
         }
 
-        public async Task<Transaction> CreateTransactionAsync(int fromUserId, int toUserId, decimal amount)
+        public async Task<Transaction> CreateTransactionAsync(int fromCardId, int toCardId, decimal amount)
         {
+            var fromCard = await _context.CreditCards.FindAsync(fromCardId);
+            var toCard = await _context.CreditCards.FindAsync(toCardId);
+
+            fromCard.Balance -= amount;
+            toCard.Balance += amount;
+
             var transaction = new Transaction
             {
-                SenderId = fromUserId,
-                ReceiverId = toUserId,
+                SenderId = fromCardId,
+                ReceiverId = toCardId,
                 Amount = amount,
                 Date = DateTime.Now
             };
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
             return transaction;
+        }
+        public async Task<List<Transaction>> GetTransactionsByUserIdAsync(int userId)
+        {
+            var userCards = await _context.CreditCards
+                .Where(c => c.UserId == userId)
+                .Select(c => c.Id)
+                .ToListAsync();
+
+            return await _context.Transactions
+                .Where(t => userCards.Contains(t.SenderId) || userCards.Contains(t.ReceiverId))
+                .ToListAsync();
         }
     }
 }

@@ -5,47 +5,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bank_App.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bank_App.Services
 {
     public class CreditCardService : ICreditCardService
     {
         private readonly AppDbContext _context;
-        private readonly Random _random = new Random();
-        public CreditCardService(AppDbContext context)
+        private readonly ICreditCardFactory _cardFactory;
+        public CreditCardService(AppDbContext context, ICreditCardFactory cardFactory)
         {
             _context = context;
+            _cardFactory = cardFactory;
         }
         public async Task<CreditCard> CreateCardAsync(int userId)
         {
-            var card = new CreditCard
-            {
-                UserId = userId,
-                Balance = 0,
-                CardNumber = GenerateCardNumber(),
-                ExpirationDate = DateTime.Now.AddYears(4),
-                CVV = GenerateCvv()
-            };
+            var card = _cardFactory.CreateCard(userId);
             _context.CreditCards.Add(card);
             await _context.SaveChangesAsync();
             return card;
         }
 
-        private string GenerateCardNumber()
+        public async Task<List<CreditCard>> GetCardsByUserIdAsync(int userId)
         {
-            var sb = new StringBuilder("4441");
-
-            for (int i = 0; i < 12; i++) 
-            {
-                sb.Append(_random.Next(0, 10));
-            }
-
-            return sb.ToString();
+            return await _context.CreditCards
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
+        }
+        public async Task<decimal> GetBalanceAsync(int cardId)
+        {
+            var card = await _context.CreditCards.FindAsync(cardId);
+            if (card == null)
+                throw new Exception("Card not found.");
+            return card.Balance;
         }
 
-        private string GenerateCvv()
+        public async Task<CreditCard> GetCardByIdAsync(int cardId)
         {
-            return _random.Next(100, 1000).ToString(); 
+            return await _context.CreditCards.FindAsync(cardId);
         }
     }
 }

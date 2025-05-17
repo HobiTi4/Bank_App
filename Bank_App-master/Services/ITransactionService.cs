@@ -9,6 +9,7 @@ namespace Bank_App.Services
 {
     public interface ITransactionService
     {
-        Task<Transaction> CreateTransactionAsync(int fromUserId, int toUserId, decimal amount);
+        Task<Transaction> CreateTransactionAsync(int fromCardId, int toCardId, decimal amount);
+        Task<List<Transaction>> GetTransactionsByUserIdAsync(int userId);
     }
 }

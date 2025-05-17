@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bank_App.Data;
 using Bank_App.Services;
+using Bank_App.AppLogic;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Bank_App.AppLogic;
+using Microsoft.Extensions.Logging;
 
 namespace Bank_App
 {
@@ -19,8 +19,8 @@ namespace Bank_App
             using IHost host = Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(logging =>
                 {
-                    logging.ClearProviders(); 
-                    logging.SetMinimumLevel(LogLevel.Warning); 
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(LogLevel.Warning);
                 })
                 .ConfigureServices((context, services) =>
                 {
@@ -29,14 +29,13 @@ namespace Bank_App
                     services.AddScoped<IUserService, UserService>();
                     services.AddScoped<ICreditCardService, CreditCardService>();
                     services.AddScoped<ITransactionService, TransactionService>();
+                    services.AddScoped<BankFacade>(); 
+                    services.AddScoped<ICreditCardFactory, CreditCardFactory>();
+                    services.AddScoped<ConsoleUI>(); 
+                    services.AddScoped<InputValidator>(); 
                     services.AddScoped<App>();
                 })
                 .Build();
-
-
-            var userService = host.Services.GetRequiredService<IUserService>();
-            var cardService = host.Services.GetRequiredService<ICreditCardService>();
-            var transactionService = host.Services.GetRequiredService<ITransactionService>();
 
             var app = host.Services.GetRequiredService<App>();
             await app.RunAsync();

@@ -11,5 +11,7 @@ namespace Bank_App.Services
     {
         Task<User> CreateUserAsync(string name, string surname, string email, string password, string? phone = null);
         Task<List<User>> GetAllUsersAsync();
+        Task<User> GetUserByIdAsync(int userId);
+        Task<User> GetUserByEmailAsync(string email);
     }
 }
