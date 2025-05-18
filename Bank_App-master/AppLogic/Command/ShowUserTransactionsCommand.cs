@@ -8,10 +8,10 @@ namespace Bank_App.AppLogic.Command
 {
     public class ShowUserTransactionsCommand : ICommand
     {
-        private readonly BankFacade _facade;
-        private readonly ConsoleUI _ui;
+        private readonly IBankFacade _facade;
+        private readonly IConsoleUI _ui;
 
-        public ShowUserTransactionsCommand(BankFacade facade, ConsoleUI ui)
+        public ShowUserTransactionsCommand(IBankFacade facade, IConsoleUI ui)
         {
             _facade = facade;
             _ui = ui;

@@ -8,10 +8,10 @@ namespace Bank_App.AppLogic.Command
 {
     public class CreateCardCommand : ICommand
     {
-        private readonly BankFacade _facade;
-        private readonly ConsoleUI _ui;
+        private readonly IBankFacade _facade;
+        private readonly IConsoleUI _ui;
 
-        public CreateCardCommand(BankFacade facade, ConsoleUI ui)
+        public CreateCardCommand(IBankFacade facade, ConsoleUI ui)
         {
             _facade = facade;
             _ui = ui;

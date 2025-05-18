@@ -8,11 +8,11 @@ namespace Bank_App.AppLogic.Command
 {
     public class CreateUserCommand : ICommand
     {
-        private readonly BankFacade _facade;
-        private readonly ConsoleUI _ui;
+        private readonly IBankFacade _facade;
+        private readonly IConsoleUI _ui;
         private readonly InputValidator _validator;
 
-        public CreateUserCommand(BankFacade facade, ConsoleUI ui, InputValidator validator)
+        public CreateUserCommand(IBankFacade facade, IConsoleUI ui, InputValidator validator)
         {
             _facade = facade;
             _ui = ui;

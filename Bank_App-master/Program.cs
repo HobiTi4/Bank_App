@@ -29,9 +29,9 @@ namespace Bank_App
                     services.AddScoped<IUserService, UserService>();
                     services.AddScoped<ICreditCardService, CreditCardService>();
                     services.AddScoped<ITransactionService, TransactionService>();
-                    services.AddScoped<BankFacade>(); 
+                    services.AddScoped<IBankFacade, BankFacade>(); 
                     services.AddScoped<ICreditCardFactory, CreditCardFactory>();
-                    services.AddScoped<ConsoleUI>(); 
+                    services.AddScoped<IConsoleUI, ConsoleUI>(); 
                     services.AddScoped<InputValidator>(); 
                     services.AddScoped<App>();
                 })
